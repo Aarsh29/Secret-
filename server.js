@@ -2,7 +2,7 @@ const http = require("node:http");
 const fs = require("node:fs");
 const path = require("node:path");
 
-const invitationPath = path.join(__dirname, "Korattur");
+const invitationPath = path.join(__dirname, "index.html");
 const port = Number(process.env.PORT) || 5173;
 
 const server = http.createServer((request, response) => {
