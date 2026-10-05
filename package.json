@@ -1,0 +1,7 @@
+{
+  "name": "gruha-pravesam-invitation",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js"
+  }
+}
