@@ -680,14 +680,14 @@
 				["Rambagh, Jaipur", "[Door No. & Street]"],
 				["6pm Onwards", "[Time]"],
 				["See the route", "[Venue details]"],
-				["Click to open the map", "[Chittoor / Tirupati / Chennai]"],
+				["Click to open the map", "Click here to get location"],
 				["meet the", "WITH GREAT JOY"],
 				["bride and groom", "[HOUSE NAME]"],
 				["We are both so delighted that you are able to join us in celebrating what we hope will be one of the happiest days of our lives. The affection shown to us by so many people since our Nichayathartham has been incredibly moving, and has touched us both deeply. We would like to take this opportunity to thank everyone most sincerely for their kindness.We are looking forward to see you at the wedding.", "We are delighted to share with you the happiness of entering our new home. On this auspicious occasion, we cordially invite you and your family to join us for the Gruha Pravesam and bless our home with your presence and good wishes."],
 				["Please rsvp", "WE SEEK YOUR PRESENCE AND BLESSINGS"],
 				["Click to message on WhatsApp", "Please join us along with your family on this auspicious occasion and bless our family as we begin this new chapter in our new home."],
 				["Things to know", "VENUE"],
-				["To help you feel at ease and enjoy every moment of the celebrations, we’ve gathered a few thoughtful details we’d love for you to know before the big day.", "[HOUSE NAME] • [Door No. & Street] • [Locality] • [Chittoor / Tirupati / Chennai] • Tamil Nadu / Andhra Pradesh"],
+				["To help you feel at ease and enjoy every moment of the celebrations, we’ve gathered a few thoughtful details we’d love for you to know before the big day.", "[HOUSE NAME] • [Door No. & Street] • [Locality]"],
 				["Hashtag", "HOUSE NAME"],
 				["While posting photos on social media please use the hashtag - #abkan", "[HOUSE NAME]"],
 				["Weather", "ADDRESS"],
@@ -695,7 +695,7 @@
 				["Staff", "LOCALITY"],
 				["We recommend the nearby hotel called Bhola Bhawan near the venue for the staff members", "[Locality]"],
 				["Parking", "CITY / STATE"],
-				["Valet parking for all our guests will be available at the venue", "[Chittoor / Tirupati / Chennai], Tamil Nadu / Andhra Pradesh"],
+				["Valet parking for all our guests will be available at the venue", "[HOUSE NAME]"],
 				["Follow", "WITH BEST COMPLIMENTS FROM"],
 				["the", "K. G. Ramesh & K. R. Revathi"],
 				["action", "Dr. K. R. Aarshitha • K. R. Aarshanth"],
@@ -711,7 +711,6 @@
 					document.title = "Gruha Pravesam – House Warming Ceremony Invitation";
 				}
 				const inactiveLinks = [
-					['[data-framer-name="CTA - Location"] a[href="https://missingpiecevites.com"]', "Venue directions have not been added"],
 					['[data-framer-name="CTA - RSVP"] a[href="https://wa.me/91XXXXXXXXXX"]', "RSVP contact has not been added"],
 					['[data-framer-name="CTA - Instagram"] a[href="https://missingpieceinvites.com"]', "Instagram profile has not been added"]
 				];
@@ -724,6 +723,12 @@
 						link.setAttribute("aria-label", label);
 						link.style.setProperty("pointer-events", "none");
 					});
+				});
+				document.querySelectorAll('[data-framer-name="CTA - Location"] a').forEach((link) => {
+					link.href = "https://maps.app.goo.gl/vKDHtcpHLLyMsd7h8";
+					link.target = "_blank";
+					link.rel = "noopener noreferrer";
+					link.setAttribute("aria-label", "Click here to get location");
 				});
 				document.querySelectorAll("p, h1, h2, h3, h4").forEach((element) => {
 					const current = element.innerText.trim().replace(/\s+/g, " ");
