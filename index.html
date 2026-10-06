@@ -807,12 +807,25 @@
 				}
 
 				const rsvpDetails = document.querySelector('[data-framer-name="CTA - 1"]');
-				if (rsvpDetails && !rsvpDetails.querySelector("[data-home-rsvp]")) {
-					const details = document.createElement("p");
-					details.dataset.homeRsvp = "";
-					details.textContent = "RSVP • [Name] • [Phone Number]";
-					details.style.cssText = "font-family: Cormorant, serif; font-size: 18px; line-height: 1.4; text-align: center; margin: 12px auto 0; max-width: 90%; color: inherit;";
-					rsvpDetails.append(details);
+				if (rsvpDetails) {
+					rsvpDetails.style.setProperty("box-sizing", "border-box", "important");
+					rsvpDetails.style.setProperty("padding", "clamp(20px, 4vw, 48px) 16px", "important");
+					const rsvpHeading = rsvpDetails.querySelector('[data-framer-name="join our journey"] p');
+					if (rsvpHeading) {
+						rsvpHeading.style.setProperty("font-size", "clamp(36px, 5.5vw, 64px)", "important");
+						rsvpHeading.style.setProperty("line-height", "1.05", "important");
+						rsvpHeading.style.setProperty("letter-spacing", "0.01em", "important");
+						rsvpHeading.style.setProperty("width", "100%", "important");
+						rsvpHeading.style.setProperty("max-width", "none", "important");
+						rsvpHeading.style.setProperty("margin", "0 auto", "important");
+					}
+					if (!rsvpDetails.querySelector("[data-home-rsvp]")) {
+						const details = document.createElement("p");
+						details.dataset.homeRsvp = "";
+						details.textContent = "RSVP • [Name] • [Phone Number]";
+						details.style.cssText = "font-family: Cormorant, serif; font-size: 18px; line-height: 1.4; text-align: center; margin: 12px auto 0; max-width: 90%; color: inherit;";
+						rsvpDetails.append(details);
+					}
 				}
 
 				const footer = document.querySelector('[data-framer-name="Footer"]');
