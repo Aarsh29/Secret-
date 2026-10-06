@@ -862,153 +862,207 @@
 				["WE LOOK FORWARD TO WELCOMING YOU TO OUR NEW HOME", "WE LOOK FORWARD TO WELCOMING YOU TO OUR NEW HOME"]
 			]);
 
-			const applyCopy = () => {
-
-				// Remove all watermark / branding logo elements from DOM
-				document.querySelectorAll(
-					'[data-framer-name="Watermark"], [data-framer-name="Watermark-Removed"], [data-framer-name*="Logo"], [data-framer-name="Branding-Removed"], .framer-1ecq5nh, .framer-yF5Cc, .framer-facrej, .framer-dmgyni, .framer-17sr7rc, .framer-1ol0rqu, .framer-jf58r0, img[src*="3vpFOuN5tHb2JuYqzoPGPaRcA"], img[srcset*="3vpFOuN5tHb2JuYqzoPGPaRcA"]'
-				).forEach((el) => {
-					try { el.remove(); } catch(e) {}
-				});
-
-				if (document.title !== "Gruha Pravesam – House Warming Ceremony Invitation") {
-					document.title = "Gruha Pravesam – House Warming Ceremony Invitation";
-				}
-				const inactiveLinks = [
-					['[data-framer-name="CTA - Location"] a[href="#"]', "Venue directions have not been added"],
-					['[data-framer-name="CTA - RSVP"] a[href="https://wa.me/91XXXXXXXXXX"]', "RSVP contact has not been added"],
-					['[data-framer-name="CTA - Instagram"] a[href="#"]', "Instagram profile has not been added"]
-				];
-				inactiveLinks.forEach(([selector, label]) => {
-					document.querySelectorAll(selector).forEach((link) => {
-						link.removeAttribute("href");
-						link.setAttribute("role", "link");
-						link.setAttribute("tabindex", "-1");
-						link.setAttribute("aria-disabled", "true");
-						link.setAttribute("aria-label", label);
-						link.style.setProperty("pointer-events", "none");
-					});
-				});
-
-				document.querySelectorAll("p, h1, h2, h3, h4").forEach((element) => {
-					const current = element.innerText.trim().replace(/\s+/g, " ");
-					if (current === "Muhurtham" || current === "Reception") {
-						const card = element.closest('[data-framer-name^="Card "]');
-						if (card) card.style.display = "none";
-						return;
-					}
-					if (element.tagName === "H3" && current.toLowerCase() === "vishu") {
-						element.textContent = "GRUHA PRAVESAM";
-						element.setAttribute("role", "heading");
-						element.setAttribute("aria-level", "1");
-						return;
-					}
-					if (element.tagName === "H2" && current === "WEDS") {
-						element.textContent = "HOUSE WARMING CEREMONY";
-						element.style.setProperty("font-size", "clamp(12px, 2vw, 20px)", "important");
-						element.style.setProperty("letter-spacing", "0.18em", "important");
-						return;
-					}
-					if (element.tagName === "H3" && current.toLowerCase() === "kavya") {
-						element.textContent = "Mr. K. G. Ramesh & Mrs. K. R. Revathi";
-						element.style.setProperty("font-size", "clamp(15px, 3vw, 26px)", "important");
-						element.style.setProperty("line-height", "1.2", "important");
-						return;
-					}
-					if (element.tagName === "P" && (current === "INVITE" || current === "HOUSE WARMING CEREMONY")) {
-						element.textContent = "HOUSE WARMING CEREMONY";
-						element.style.setProperty("white-space", "normal", "important");
-						element.style.setProperty("text-align", "center", "important");
-						element.style.setProperty("letter-spacing", "0.12em", "important");
-						element.style.setProperty("line-height", "1.25", "important");
-						const parent = element.closest(".framer-1bk5mtr, .framer-se9gog");
-						if (parent) {
-							parent.style.setProperty("height", "auto", "important");
-							parent.style.setProperty("overflow", "visible", "important");
-						}
-						return;
-					}
-					if (copy.has(current)) element.textContent = copy.get(current);
-					if (current === "00:00:00:00") element.style.display = "none";
-				});
-
-				document.querySelectorAll('[data-framer-name^="Card "]').forEach((card) => {
-					const location = card.querySelector('[data-framer-name="Location"]');
-					if (location) location.style.setProperty("display", "none", "important");
-					const times = [...card.querySelectorAll("p")].filter(
-						(element) => element.innerText.trim() === "[Time]"
-					);
-					times.slice(1).forEach((element) => element.style.setProperty("display", "none", "important"));
-					card.querySelectorAll("p").forEach((element) => {
-						if (element.innerText.trim() === "[Door No. & Street]") {
-							element.style.setProperty("display", "none", "important");
-						}
-					});
-				});
-
-				// Robust handling of Compliments section across all breakpoints
-				document.querySelectorAll('[data-framer-name="CTA - Instagram"]').forEach((container) => {
-					container.querySelectorAll('[data-framer-name="Section 3"], .framer-1531lox-container').forEach((el) => {
-						el.style.setProperty("display", "none", "important");
-					});
-
-					const journey = container.querySelector('[data-framer-name="join our journey"]');
-					if (journey) {
-						const paragraphs = [...journey.querySelectorAll("p")];
-						if (paragraphs[0]) {
-							paragraphs[0].textContent = "WITH BEST COMPLIMENTS FROM";
-						}
-						if (paragraphs[1]) {
-							paragraphs[1].dataset.homeFamilyNames = "";
-							paragraphs[1].textContent = "K. G. Ramesh & K. R. Revathi\nDr. K. R. Aarshitha\nK. R. Aarshanth";
-							paragraphs[1].style.setProperty("white-space", "pre-line", "important");
-						}
-						paragraphs.slice(2).forEach((extraP) => {
-							extraP.textContent = "";
-							extraP.style.setProperty("display", "none", "important");
-						});
-					}
-
-					const subtitle = container.querySelector('[data-framer-name="Click to open the map"] p');
-					if (subtitle) {
-						subtitle.textContent = "and our family";
-					}
-				});
-
-				const rsvpDetails = document.querySelector('[data-framer-name="CTA - 1"]');
-				if (rsvpDetails && !rsvpDetails.querySelector("[data-home-rsvp]")) {
-					const details = document.createElement("p");
-					details.dataset.homeRsvp = "";
-					details.textContent = "RSVP • [Name] • [Phone Number]";
-					details.style.cssText = "font-family: Cormorant, serif; font-size: 18px; line-height: 1.4; text-align: center; margin: 12px auto 0; max-width: 90%; color: inherit;";
-					rsvpDetails.append(details);
-				}
-
-				const footer = document.querySelector('[data-framer-name="Footer"]');
-				if (footer && !footer.querySelector("[data-home-footer-rsvp]")) {
-					const details = document.createElement("p");
-					details.dataset.homeFooterRsvp = "";
-					details.textContent = "RSVP • [Name] • [Phone Number]";
-					details.style.cssText = "font-family: Cormorant, serif; font-size: 18px; line-height: 1.4; text-align: center; margin: 12px auto 0; color: inherit;";
-					footer.append(details);
+			const setText = (el, text) => {
+				if (el && el.textContent !== text) {
+					el.textContent = text;
 				}
 			};
 
-			applyCopy();
-			new MutationObserver(applyCopy).observe(document.body, {
-				childList: true,
-				characterData: true,
-				subtree: true
-			});
-			new MutationObserver(() => {
-				if (document.title !== "Gruha Pravesam – House Warming Ceremony Invitation") {
-					document.title = "Gruha Pravesam – House Warming Ceremony Invitation";
+			const setStyle = (el, prop, val, prio = "important") => {
+				if (el && el.style.getPropertyValue(prop) !== val) {
+					el.style.setProperty(prop, val, prio);
 				}
-			}).observe(document.querySelector("title"), {
-				childList: true,
-				characterData: true,
-				subtree: true
-			});
+			};
+
+			let isApplying = false;
+
+			const applyCopy = () => {
+				if (isApplying) return;
+				isApplying = true;
+
+				try {
+					// 1. Remove all watermark / branding logo elements from DOM
+					document.querySelectorAll(
+						'[data-framer-name="Watermark"], [data-framer-name="Watermark-Removed"], [data-framer-name*="Logo"], [data-framer-name="Branding-Removed"], .framer-1ecq5nh, .framer-yF5Cc, .framer-facrej, .framer-dmgyni, .framer-17sr7rc, .framer-1ol0rqu, .framer-jf58r0'
+					).forEach((el) => {
+						try { el.remove(); } catch(e) {}
+					});
+
+					// 2. Set title safely
+					const targetTitle = "Gruha Pravesam – House Warming Ceremony Invitation";
+					if (document.title !== targetTitle) {
+						document.title = targetTitle;
+					}
+
+					// 3. Mark inactive links safely
+					const inactiveLinks = [
+						['[data-framer-name="CTA - Location"] a', "Venue directions have not been added"],
+						['[data-framer-name="CTA - RSVP"] a[href="https://wa.me/91XXXXXXXXXX"]', "RSVP contact has not been added"],
+						['[data-framer-name="CTA - Instagram"] a', "Instagram profile has not been added"]
+					];
+					inactiveLinks.forEach(([selector, label]) => {
+						document.querySelectorAll(selector).forEach((link) => {
+							if (link.getAttribute("href") === "#" || link.getAttribute("href")?.includes("missingpiece")) {
+								link.removeAttribute("href");
+								link.setAttribute("role", "link");
+								link.setAttribute("tabindex", "-1");
+								link.setAttribute("aria-disabled", "true");
+								link.setAttribute("aria-label", label);
+								setStyle(link, "pointer-events", "none");
+							}
+						});
+					});
+
+					// 4. Update headings, paragraphs and labels safely
+					document.querySelectorAll("p, h1, h2, h3, h4").forEach((element) => {
+						const current = element.innerText.trim().replace(/\s+/g, " ");
+
+						if (current === "Muhurtham" || current === "Reception") {
+							const card = element.closest('[data-framer-name^="Card "]');
+							if (card && card.style.display !== "none") card.style.display = "none";
+							return;
+						}
+
+						if (element.tagName === "H3" && current.toLowerCase() === "vishu") {
+							setText(element, "GRUHA PRAVESAM");
+							if (element.getAttribute("role") !== "heading") {
+								element.setAttribute("role", "heading");
+								element.setAttribute("aria-level", "1");
+							}
+							return;
+						}
+
+						if (element.tagName === "H2" && current === "WEDS") {
+							setText(element, "HOUSE WARMING CEREMONY");
+							setStyle(element, "font-size", "clamp(12px, 2vw, 20px)");
+							setStyle(element, "letter-spacing", "0.18em");
+							return;
+						}
+
+						if (element.tagName === "H3" && current.toLowerCase() === "kavya") {
+							setText(element, "Mr. K. G. Ramesh & Mrs. K. R. Revathi");
+							setStyle(element, "font-size", "clamp(15px, 3vw, 26px)");
+							setStyle(element, "line-height", "1.2");
+							return;
+						}
+
+						if (element.tagName === "P" && (current === "INVITE" || current === "HOUSE WARMING CEREMONY")) {
+							setText(element, "HOUSE WARMING CEREMONY");
+							setStyle(element, "white-space", "normal");
+							setStyle(element, "text-align", "center");
+							setStyle(element, "letter-spacing", "0.12em");
+							setStyle(element, "line-height", "1.25");
+							const parent = element.closest(".framer-1bk5mtr, .framer-se9gog");
+							if (parent) {
+								setStyle(parent, "height", "auto");
+								setStyle(parent, "overflow", "visible");
+							}
+							return;
+						}
+
+						if (copy.has(current) && element.textContent !== copy.get(current)) {
+							setText(element, copy.get(current));
+						}
+
+						if (current === "00:00:00:00" && element.style.display !== "none") {
+							element.style.display = "none";
+						}
+					});
+
+					// 5. Hide redundant times and cards
+					document.querySelectorAll('[data-framer-name^="Card "]').forEach((card) => {
+						const location = card.querySelector('[data-framer-name="Location"]');
+						if (location) setStyle(location, "display", "none");
+						const times = [...card.querySelectorAll("p")].filter(
+							(el) => el.innerText.trim() === "[Time]"
+						);
+						times.slice(1).forEach((el) => setStyle(el, "display", "none"));
+						card.querySelectorAll("p").forEach((el) => {
+							if (el.innerText.trim() === "[Door No. & Street]") {
+								setStyle(el, "display", "none");
+							}
+						});
+					});
+
+					// 6. Robust handling of Compliments section across all breakpoints
+					document.querySelectorAll('[data-framer-name="CTA - Instagram"]').forEach((container) => {
+						container.querySelectorAll('[data-framer-name="Section 3"], .framer-1531lox-container').forEach((el) => {
+							setStyle(el, "display", "none");
+						});
+
+						const journey = container.querySelector('[data-framer-name="join our journey"]');
+						if (journey) {
+							const paragraphs = [...journey.querySelectorAll("p")];
+							if (paragraphs[0]) {
+								setText(paragraphs[0], "WITH BEST COMPLIMENTS FROM");
+							}
+							if (paragraphs[1]) {
+								paragraphs[1].dataset.homeFamilyNames = "";
+								setText(paragraphs[1], "K. G. Ramesh & K. R. Revathi\nDr. K. R. Aarshitha\nK. R. Aarshanth");
+								setStyle(paragraphs[1], "white-space", "pre-line");
+							}
+							paragraphs.slice(2).forEach((extraP) => {
+								setText(extraP, "");
+								setStyle(extraP, "display", "none");
+							});
+						}
+
+						const subtitle = container.querySelector('[data-framer-name="Click to open the map"] p');
+						if (subtitle) {
+							setText(subtitle, "and our family");
+						}
+					});
+
+					// 7. Add RSVP info safely if missing
+					const rsvpDetails = document.querySelector('[data-framer-name="CTA - 1"]');
+					if (rsvpDetails && !rsvpDetails.querySelector("[data-home-rsvp]")) {
+						const details = document.createElement("p");
+						details.dataset.homeRsvp = "";
+						details.textContent = "RSVP • [Name] • [Phone Number]";
+						details.style.cssText = "font-family: Cormorant, serif; font-size: 18px; line-height: 1.4; text-align: center; margin: 12px auto 0; max-width: 90%; color: inherit;";
+						rsvpDetails.append(details);
+					}
+
+					const footer = document.querySelector('[data-framer-name="Footer"]');
+					if (footer && !footer.querySelector("[data-home-footer-rsvp]")) {
+						const details = document.createElement("p");
+						details.dataset.homeFooterRsvp = "";
+						details.textContent = "RSVP • [Name] • [Phone Number]";
+						details.style.cssText = "font-family: Cormorant, serif; font-size: 18px; line-height: 1.4; text-align: center; margin: 12px auto 0; color: inherit;";
+						footer.append(details);
+					}
+				} finally {
+					isApplying = false;
+				}
+			};
+
+			// Execute safely on load and on DOM ready
+			applyCopy();
+
+			// Throttled observer for React hydration
+			let rAF = null;
+			const throttledApply = () => {
+				if (rAF) return;
+				rAF = requestAnimationFrame(() => {
+					rAF = null;
+					applyCopy();
+				});
+			};
+
+			const observer = new MutationObserver(throttledApply);
+			if (document.body) {
+				observer.observe(document.body, { childList: true, subtree: true });
+			} else {
+				document.addEventListener("DOMContentLoaded", () => {
+					observer.observe(document.body, { childList: true, subtree: true });
+				});
+			}
+
+			// Timed fallbacks during initial hydration phase, then disconnect observer to keep CPU at 0%
+			[300, 800, 1500, 3000].forEach((delay) => setTimeout(applyCopy, delay));
+			setTimeout(() => {
+				try { observer.disconnect(); } catch(e) {}
+			}, 6000);
 		});
 	</script>
 </head>
